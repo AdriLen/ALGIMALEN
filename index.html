@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALGIMALEN</title>
+    <link rel="stylesheet" href="Estilos/styles.css">
+
+</head>
+<body class="min-h-screen p-4">
+    <div id="welcome-screen" class="welcome-screen" style="display: flex;">
+        <div class="welcome-content">
+            <h1 class="text-4xl font-extrabold game-logo mb-4">ALGIMALEN</h1>
+            <p class="text-gray-600 mb-6">Selecciona un nivel de dificultad para comenzar:</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4 mb-6">
+                <div id="select-level-1" class="level-card selected">
+                    <h3 class="text-xl font-bold text-blue-700">Nivel 1</h3>
+                    <p class="text-sm text-gray-600">Trinomios de la forma x² + bx + c</p>
+                </div>
+                <div id="select-level-2" class="level-card">
+                    <h3 class="text-xl font-bold text-blue-700">Nivel 2</h3>
+                    <p class="text-sm text-gray-600">Trinomios de la forma ax² + bx + c</p>
+                </div>
+                <div id="select-level-3" class="level-card">
+                    <h3 class="text-xl font-bold text-blue-700">Nivel 3</h3>
+                    <p class="text-sm text-gray-600">Casos especiales</p>
+                </div>
+            </div>
+            <button id="start-game-btn" class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg text-lg">
+                Comenzar Juego
+            </button>
+        </div>
+    </div>
+ 
+    <div class="max-w-6xl mx-auto">
+        <header class="text-center mb-6">
+            <h1 class="text-5xl font-extrabold game-logo mb-2">ALGIMALEN</h1>
+            <p class="text-gray-600">Forma igualdades algebraicas válidas para ganar puntos</p>
+            <div class="mt-2 mb-4">
+                <span id="current-level-display" class="inline-block bg-blue-700 text-white px-4 py-2 rounded-lg font-bold">Nivel 1: Trinomios de la forma x² + bx + c</span>
+            </div>
+            <div class="flex justify-center gap-3 mt-4">
+                <button id="level-1" class="difficulty-btn text-white font-bold py-2 px-4 rounded-lg active relative">
+                    Nivel 1
+                </button>
+                <button id="level-2" class="difficulty-btn text-white font-bold py-2 px-4 rounded-lg relative">
+                    Nivel 2
+                </button>
+                <button id="level-3" class="difficulty-btn text-white font-bold py-2 px-4 rounded-lg relative">
+                    Nivel 3
+                </button>
+            </div>
+            <div class="mt-3 text-blue-800">
+                <span>Igualdades disponibles: <span id="equalities-counter" class="font-bold">20</span>/20</span>
+            </div>
+        </header>
+
+        <div class="game-container bg-white rounded-xl shadow-lg p-6 mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <div class="text-lg font-semibold text-blue-700">
+                    Ronda: <span id="round-counter">1</span>/3
+                </div>
+                <div class="text-lg font-semibold text-blue-700">
+                    Turno: Jugador <span id="current-player">1</span>
+                </div>
+                <div class="text-lg font-semibold text-blue-700">
+                    Cartas en mazo: <span id="deck-counter">31</span>
+                </div>
+            </div>
+            <div class="equation-display bg-blue-50 p-4 mb-6 flex items-center justify-center">
+                <div id="equation-display" class="text-xl font-semibold text-blue-800">Selecciona cartas para formar una igualdad</div>
+            </div>
+            <div class="table-area bg-blue-100 p-4 mb-6">
+                <h2 class="text-xl font-semibold text-blue-800 mb-3">Mesa (4 cartas)</h2>
+                <div id="table-cards" class="flex flex-wrap gap-3"></div>
+            </div>
+            <div id="players-container"></div>
+            <div class="flex justify-center gap-4 mt-6">
+                <button id="verify-btn" class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg opacity-50" disabled>
+                    Verificar Igualdad
+                </button>
+                <button id="add-to-table-btn" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg opacity-50" disabled>
+                    Añadir a la Mesa
+                </button>
+                <button id="end-turn-btn" class="btn bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg">
+                    Terminar Turno
+                </button>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-4 mb-6">
+            <h2 class="text-xl font-semibold text-blue-800 mb-2">Registro de Juego</h2>
+            <div id="game-log" class="h-32 overflow-y-auto bg-gray-50 p-3 rounded-lg text-gray-700"></div>
+        </div>
+        <div id="game-over-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl p-6 max-w-md">
+                <h2 class="text-2xl font-bold text-blue-800 mb-4">¡Fin del Juego!</h2>
+                <div id="final-scores" class="mb-4"></div>
+                <div id="winner-announcement" class="text-xl font-bold text-green-600 mb-4"></div>
+                <button id="new-game-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
+                    Nuevo Juego
+                </button>
+            </div>
+        </div>
+        <div class="fixed bottom-4 right-4">
+            
+            <button id="show-rules" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full rounded-lg">
+                Reglas
+            </button>
+        </div>
+    </div>
+        
+    <div id="rules-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 items-center justify-center z-50">
+    <div class="modal-content rounded-xl p-6 max-w-2xl max-h-[80vh] overflow-y-auto">
+                <h2 class="text-2xl font-bold text-blue-800 mb-4 bg-white items-center">Reglas de ALGIMALEN</h2>
+                <div class="text-gray-700 space-y-3 bg-white">
+                    <p><strong>Objetivo:</strong> Acumular puntos formando igualdades algebraicas válidas.</p>
+                    <p><strong>Jugadores:</strong> 2 a 4 jugadores.</p>
+                    <ul class="list-disc pl-5">
+                        <li>Mazo: Cartas con contenido algebraico según el nivel de dificultad.</li>
+                        <li>Mesa: 4 cartas (3 con expresiones algebraicas y 1 signo de igualdad).</li>
+                        <li>Mano del Jugador: Cada jugador recibe 3 cartas inicialmente.</li>
+                        <li>Pozo del Jugador: Lugar donde se acumulan las cartas de las igualdades armadas.</li>
+                    </ul>
+                    <ul class="list-disc pl-5">
+                        <li>
+                            <strong>Nivel 1:</strong> Trinomios de la forma x² + bx + c.<br>
+                            <span class="text-blue-700">Regla: Busca dos números que multiplicados den el término independiente (c) y sumados den el coeficiente del término lineal (b).</span>
+                        </li>
+                        <li>
+                            <strong>Nivel 2:</strong> Trinomios de la forma ax² + bx + c.<br>
+                            <span class="text-blue-700">Regla: Busca dos números que multiplicados entre sí y por (a) den el término independiente (c) y sumados y multiplicados por (a) den el coeficiente del término lineal (b).</span>
+                        </li>
+                        <li>
+                            <strong>Nivel 3:</strong> Casos especiales.
+                        </li>
+                    </ul>
+                    <ol class="list-decimal pl-5">
+                        <li>Intentar armar igualdad: Selecciona una carta de tu mano y cartas de la mesa para formar una igualdad algebraica válida.</li>
+                        <li>Añadir carta a la mesa: Si no puedes formar una igualdad, añade una carta de tu mano a la mesa.</li>
+                    </ol>
+                    <p><strong>Puntuación:</strong> 1 punto por cada letra (x, y, z) presente en las cartas de las igualdades armadas.</p>
+                    <p><strong>Fin del Juego:</strong> Después de 3 rondas o cuando el mazo se agota. Gana el jugador con más puntos.</p>
+                </div>
+                <button id="close-rules" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+        <script src="Js/script.js"></script>
+</body>
+</html>
