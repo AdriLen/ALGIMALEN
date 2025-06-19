@@ -257,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cardFront.className = "card-front";
 
     if (card.value.length > 12) {
-      cardFront.style.fontSize = "12px";
+      cardFront.style.fontSize = "10px";
     }
 
     if (card.value === "=") {
